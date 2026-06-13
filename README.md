@@ -42,6 +42,8 @@ A session's vertical version-history graph, with technology tags and a copy-past
 
 ## Pick how to run it
 
+**Let your agent set it up** — `git clone` the repo and tell Claude Code *“set this up”*. It follows [AGENTS.md](AGENTS.md) to choose a mode, spin up the Docker image, and wire the `/save` skill + MCP into your client. Prefer to do it by hand? Pick a mode:
+
 | | When | Database | Guide |
 |---|------|----------|-------|
 | **Standalone** | just want it on your machine, no infra | SQLite (a file) | [docs/run-standalone.md](docs/run-standalone.md) |
@@ -54,8 +56,6 @@ docker run -d -p 8080:8080 -e SPRING_PROFILES_ACTIVE=sqlite \
   -v session-ledger-data:/app/data ghcr.io/buldiei/claude-code-session-ledger:latest
 # → http://localhost:8080  (then wire up Claude Code: see docs/run-standalone.md)
 ```
-
-> Setting up with an AI agent? Point it at the repo — [AGENTS.md](AGENTS.md) is the entry point.
 
 The DB is chosen by Spring profile: `sqlite` (Hibernate creates the schema) or `postgres`
 (default; Flyway migrations). Switch with `SPRING_PROFILES_ACTIVE`.
