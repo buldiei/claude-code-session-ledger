@@ -46,6 +46,14 @@ A session's vertical version-history graph, with technology tags and a copy-past
 | **Standalone** | just want it on your machine, no infra | SQLite (a file) | [docs/run-standalone.md](docs/run-standalone.md) |
 | **Server** | host it on another machine, reachable on your network | PostgreSQL | [docs/run-server.md](docs/run-server.md) |
 
+Try it in seconds with the prebuilt image (multi-arch amd64/arm64):
+
+```bash
+docker run -d -p 8080:8080 -e SPRING_PROFILES_ACTIVE=sqlite \
+  -v session-ledger-data:/app/data ghcr.io/buldiei/claude-code-session-ledger:latest
+# → http://localhost:8080  (then wire up Claude Code: see docs/run-standalone.md)
+```
+
 > Setting up with an AI agent? Point it at the repo — [AGENTS.md](AGENTS.md) is the entry point.
 
 The DB is chosen by Spring profile: `sqlite` (Hibernate creates the schema) or `postgres`

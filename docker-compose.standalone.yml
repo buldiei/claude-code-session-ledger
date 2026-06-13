@@ -10,6 +10,8 @@
 # check `grep SESSION_LEDGER_MCP_TOKEN .env` if unsure which token is in effect.
 services:
   app:
+    # Build from source. To skip the build, comment out `build:` and use the published image:
+    #   image: ghcr.io/buldiei/claude-code-session-ledger:latest
     build: .
     image: session-ledger:1.0.0
     container_name: session-ledger

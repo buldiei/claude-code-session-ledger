@@ -18,7 +18,24 @@ The `/mcp` endpoint can be protected by a bearer token (`SESSION_LEDGER_MCP_TOKE
 > `SESSION_LEDGER_MCP_TOKEN` will be used silently. Check with `grep SESSION_LEDGER_MCP_TOKEN .env`
 > if you're unsure which token is in effect.
 
-## Option A — Docker (recommended)
+## Option A — Prebuilt image (fastest, no build)
+
+Pull the published multi-arch image (amd64 + arm64) and run it — starts in seconds:
+
+```bash
+docker run -d --name session-ledger -p 8080:8080 \
+  -e SPRING_PROFILES_ACTIVE=sqlite \
+  -e SESSION_LEDGER_SQLITE_PATH=/app/data/session-ledger.db \
+  -e SESSION_LEDGER_MCP_TOKEN="$SESSION_LEDGER_MCP_TOKEN" \
+  -v session-ledger-data:/app/data \
+  ghcr.io/buldiei/claude-code-session-ledger:latest
+```
+
+- Open <http://localhost:8080> — the web UI. API at `/api`, MCP at `/mcp`, same origin.
+- Data persists in the `session-ledger-data` volume.
+- You still need the repo for the client step (the `/save` skill + installer).
+
+## Option B — Docker Compose (build from source)
 
 Builds Java and Node for you; nothing else to install.
 
@@ -30,7 +47,7 @@ docker compose -f docker-compose.standalone.yml up -d --build
 - The SQLite DB lives in the `session_ledger_data` Docker volume (survives restarts).
 - API at `/api`, MCP at `/mcp`, all on the same origin.
 
-## Option B — No Docker (run the jar)
+## Option C — No Docker (run the jar)
 
 Needs JDK 25 (`sdk install java 25-amzn`) and Node 20+.
 
