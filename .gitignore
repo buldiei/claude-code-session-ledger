@@ -7,8 +7,9 @@ target/
 # Built frontend baked into the jar at image-build time (never committed)
 src/main/resources/static/
 
-# Local screenshots / scratch
+# Local screenshots / scratch (but keep committed README assets)
 *.png
+!docs/assets/*.png
 
 # IDE
 .idea/

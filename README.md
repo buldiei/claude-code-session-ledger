@@ -21,6 +21,16 @@ continue in the CLI.
 It ships as **one container** (Spring serves the API, the MCP endpoint, and the built SvelteKit
 SPA from a single origin) plus a **one-command client installer** for Claude Code.
 
+## Screenshots
+
+Browse and search your saved sessions:
+
+![Session list](docs/assets/session-list.png)
+
+A session's vertical version-history graph, with technology tags and a copy-paste `claude --resume` command:
+
+![Session detail with version graph](docs/assets/session.png)
+
 ## Pick how to run it
 
 | | When | Database | Guide |
