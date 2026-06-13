@@ -23,6 +23,12 @@ continue in the CLI.
 It ships as **one container** (Spring serves the API, the MCP endpoint, and the built SvelteKit
 SPA from a single origin) plus a **one-command client installer** for Claude Code.
 
+## How it works
+
+1. **Claude saves the session** — run `/save` in any Claude Code session and the model writes a card (title, one-line summary, tags) through the MCP tool. Re-running `/save` appends a new version.
+2. **You browse them** — the web UI lists every session as a card, searchable by text and tags, each with its full version-history graph.
+3. **Resume in one click** — copy the `claude --resume …` command from a card and pick up exactly where you left off.
+
 ## Screenshots
 
 Browse and search your saved sessions:
