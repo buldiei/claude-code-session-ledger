@@ -5,6 +5,8 @@
 ![Java 25](https://img.shields.io/badge/Java-25-orange)
 ![Spring Boot 4](https://img.shields.io/badge/Spring%20Boot-4-brightgreen)
 
+**Claude Code sessions are ephemeral and pile up fast** — which one had that refactor, where did I leave off, how do I jump back in? session-ledger keeps them as browsable, searchable cards you can resume in one click.
+
 Store your Claude Code sessions as **versioned cards**. One self-hosted service, two contracts
 with deliberately split CRUD:
 
