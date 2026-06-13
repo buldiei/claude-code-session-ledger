@@ -1,5 +1,10 @@
 # session-ledger
 
+[![CI](https://github.com/buldiei/claude-code-session-ledger/actions/workflows/ci.yml/badge.svg)](https://github.com/buldiei/claude-code-session-ledger/actions/workflows/ci.yml)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Java 25](https://img.shields.io/badge/Java-25-orange)
+![Spring Boot 4](https://img.shields.io/badge/Spring%20Boot-4-brightgreen)
+
 Store your Claude Code sessions as **versioned cards**. One self-hosted service, two contracts
 with deliberately split CRUD:
 
