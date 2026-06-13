@@ -5,10 +5,11 @@
 ![Java 25](https://img.shields.io/badge/Java-25-orange)
 ![Spring Boot 4](https://img.shields.io/badge/Spring%20Boot-4-brightgreen)
 
-**Claude Code sessions are ephemeral and pile up fast** — which one had that refactor, where did I leave off, how do I jump back in? session-ledger keeps them as browsable, searchable cards you can resume in one click.
+> **Self-hosted web app that turns your Claude Code sessions into curated, versioned cards** — Claude writes each one via MCP; you browse, search, and one-click `claude --resume`.
 
-Store your Claude Code sessions as **versioned cards**. One self-hosted service, two contracts
-with deliberately split CRUD:
+**Claude Code sessions are ephemeral and pile up fast** — which one had that refactor, where did I leave off, how do I jump back in? session-ledger keeps them as curated, searchable cards you can resume in one click — a session ledger you maintain, not a raw-transcript browser.
+
+One self-hosted service, two contracts with deliberately split CRUD:
 
 | Side | Who | CRUD | Channel |
 |------|-----|------|---------|
