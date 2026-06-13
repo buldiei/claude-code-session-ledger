@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: session-ledger
+  # Default to Postgres (server/production). Standalone uses: SPRING_PROFILES_ACTIVE=sqlite
+  profiles:
+    default: postgres
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+  # Spring AI MCP server. STREAMABLE -> single /mcp endpoint (default SSE serves /sse).
+  ai:
+    mcp:
+      server:
+        name: session-ledger
+        version: 0.1.0
+        protocol: STREAMABLE
+        type: SYNC
+        streamable-http:
+          mcp-endpoint: /mcp
+
+session-ledger:
+  # Bearer token required on the MCP endpoint. Leave blank to disable (local dev only).
+  mcp:
+    token: ${SESSION_LEDGER_MCP_TOKEN:}
+    path: /mcp
+  # Optional public URL for the "view card" link returned to Claude. When blank it's derived
+  # from the host the MCP request came in on (correct without config). Set it only behind a
+  # reverse proxy or when the public URL differs from what clients connect to.
+  web-base-url: ${SESSION_LEDGER_WEB_BASE_URL:}
+  cors:
+    allowed-origins: ${SESSION_LEDGER_CORS_ORIGINS:http://localhost:5173}
+
+server:
+  port: ${SERVER_PORT:8080}

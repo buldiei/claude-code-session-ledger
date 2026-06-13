@@ -1,0 +1,29 @@
+# Standalone — no external database, no .env required. SQLite lives in a named volume.
+#
+#   docker compose -f docker-compose.standalone.yml up -d --build
+#
+# Reachable at http://localhost:${SERVER_PORT:-8080}. Set SESSION_LEDGER_MCP_TOKEN to
+# protect the MCP endpoint (recommended even locally); leave blank to run open.
+#
+# NOTE: docker compose auto-loads a .env from this directory for ${...} interpolation.
+# A leftover .env (e.g. from a server setup) will supply SESSION_LEDGER_MCP_TOKEN silently —
+# check `grep SESSION_LEDGER_MCP_TOKEN .env` if unsure which token is in effect.
+services:
+  app:
+    build: .
+    image: session-ledger:1.0.0
+    container_name: session-ledger
+    environment:
+      SPRING_PROFILES_ACTIVE: sqlite
+      SESSION_LEDGER_SQLITE_PATH: /app/data/session-ledger.db
+      SESSION_LEDGER_MCP_TOKEN: ${SESSION_LEDGER_MCP_TOKEN:-}
+      # web-base-url is intentionally NOT set: the card link is derived from the request host,
+      # so it's correct regardless of any stray .env. Same-origin needs no CORS config either.
+    ports:
+      - "${SERVER_PORT:-8080}:8080"
+    volumes:
+      - session_ledger_data:/app/data
+    restart: unless-stopped
+
+volumes:
+  session_ledger_data:

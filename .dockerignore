@@ -1,0 +1,12 @@
+target/
+frontend/node_modules/
+frontend/.svelte-kit/
+frontend/build/
+src/main/resources/static/
+.git/
+.idea/
+*.iml
+.env
+.env.local
+ddos.png
+*.png

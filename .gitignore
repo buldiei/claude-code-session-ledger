@@ -1,0 +1,33 @@
+# Java / Maven
+target/
+*.class
+.mvn/
+!.mvn/wrapper/maven-wrapper.properties
+
+# Built frontend baked into the jar at image-build time (never committed)
+src/main/resources/static/
+
+# Local screenshots / scratch
+*.png
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Claude Code — machine-local settings (keep the skill, ignore local prefs)
+.claude/settings.local.json
+
+# Node / SvelteKit
+frontend/node_modules/
+frontend/.svelte-kit/
+frontend/build/
+frontend/.vite/
+
+# Env / secrets
+.env
+.env.local
+*.local.env
+
+# OS
+.DS_Store

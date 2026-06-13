@@ -1,0 +1,15 @@
+# SQLite profile — standalone, zero infrastructure. The DB is a single file.
+# Flyway is off here (its Postgres migrations aren't portable); Hibernate creates/updates
+# the schema directly via the community SQLite dialect. Fine for a local single-user tool.
+spring:
+  datasource:
+    url: jdbc:sqlite:${SESSION_LEDGER_SQLITE_PATH:./data/session-ledger.db}?foreign_keys=on
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.community.dialect.SQLiteDialect
+  flyway:
+    enabled: false
