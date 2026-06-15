@@ -103,6 +103,36 @@ cd frontend && npm install && npm run dev    # Vite dev server on :5173, proxies
 mvn test
 ```
 
+## Security & permissions
+
+- **No elevated access.** It does **not** require `--dangerously-skip-permissions` or any elevated
+  Claude Code permission. There are **no lifecycle/auto hooks** — `/save` is explicit
+  (`disable-model-invocation: true`) and its only inline command is `pwd`.
+- **Network:** the client talks only to **your own** session-ledger instance (the URL you configure).
+  The service makes no third-party calls or telemetry and does not call the Anthropic API itself.
+  Images are pulled from `ghcr.io`; the Docker build fetches from npm and Maven Central.
+- **Secrets:** the MCP endpoint is protected by a bearer token; real secrets live only in `.env`
+  (gitignored). `client/install.sh` writes only under `~/.claude` (the skill + MCP registration)
+  and is fully commented.
+
+## Uninstall
+
+**Client (Claude Code):**
+```bash
+claude mcp remove session-ledger -s user
+rm -rf ~/.claude/skills/save
+```
+Nothing else is installed on the client (no hooks, no extra permissions). Restart Claude Code.
+
+**Service & data:**
+```bash
+docker compose -f docker-compose.standalone.yml down     # stop (keeps data)
+docker compose -f docker-compose.standalone.yml down -v   # also delete the SQLite volume (cards)
+docker rmi ghcr.io/buldiei/claude-code-session-ledger     # drop the image (optional)
+```
+For the server profile use `docker compose down [-v]`; drop the Postgres DB/role from
+`db/bootstrap.sql` if you no longer need them.
+
 ## Architecture (Clean Architecture, single Maven module)
 
 ```
