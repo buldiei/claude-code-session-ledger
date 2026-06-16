@@ -1,10 +1,15 @@
 <script>
   import { onMount } from 'svelte';
+  import { get } from 'svelte/store';
+  import { goto } from '$app/navigation';
   import { listSessions } from '$lib/api.js';
   import { relativeTime, shortId } from '$lib/format.js';
+  import { helpOpen } from '$lib/ui.js';
 
   let state = $state({ status: 'loading', sessions: [], error: null });
   let query = $state('');
+  let sel = $state(-1);
+  let searchEl;
 
   async function load() {
     try {
@@ -29,7 +34,26 @@
       ? state.sessions.filter((s) => haystack(s).includes(query.trim().toLowerCase()))
       : []
   );
+
+  function onKey(e) {
+    if (get(helpOpen)) return;
+    const typing = e.target.matches?.('input, textarea, [contenteditable]');
+    if (e.key === '/' && !typing) { e.preventDefault(); searchEl?.focus(); return; }
+    if (e.key === 'Escape' && typing) { e.target.blur(); return; }
+    if (typing) return;
+    if (e.key === 'j' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      sel = Math.min(sel + 1, filtered.length - 1);
+    } else if (e.key === 'k' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      sel = Math.max(sel - 1, 0);
+    } else if (e.key === 'Enter' && sel >= 0 && filtered[sel]) {
+      goto(`/sessions/${encodeURIComponent(filtered[sel].sessionId)}`);
+    }
+  }
 </script>
+
+<svelte:window onkeydown={onKey} />
 
 {#if state.status === 'ready'}
   <div class="subhead">
@@ -37,8 +61,9 @@
     <input
       class="search"
       type="search"
-      placeholder="Search description, path or tech…"
+      placeholder="Search description, path or tech…  ( / )"
       bind:value={query}
+      bind:this={searchEl}
     />
   </div>
 {/if}
@@ -53,8 +78,8 @@
   <p class="empty">Nothing matches “{query}”.</p>
 {:else}
   <div class="card-grid">
-    {#each filtered as s (s.sessionId)}
-      <a class="card" href={`/sessions/${encodeURIComponent(s.sessionId)}`}>
+    {#each filtered as s, i (s.sessionId)}
+      <a class="card" class:selected={i === sel} href={`/sessions/${encodeURIComponent(s.sessionId)}`}>
         <div class="meta">
           <span class="pill">v{s.versionCount}</span>
           <span>{relativeTime(s.updatedAt)}</span>

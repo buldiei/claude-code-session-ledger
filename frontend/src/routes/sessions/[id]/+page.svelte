@@ -2,8 +2,10 @@
   import { onMount } from 'svelte';
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
+  import { get } from 'svelte/store';
   import { getSession, deleteSession } from '$lib/api.js';
   import { relativeTime, tildify, resumeCommand } from '$lib/format.js';
+  import { helpOpen } from '$lib/ui.js';
 
   let id = $derived($page.params.id);
   let state = $state({ status: 'loading', session: null, error: null });
@@ -37,7 +39,16 @@
     await deleteSession(id);
     goto('/');
   }
+
+  function onKey(e) {
+    if (get(helpOpen)) return;
+    if (e.target.matches?.('input, textarea, [contenteditable]')) return;
+    if (e.key === 'Escape' || e.key === 'ArrowLeft' || e.key === 'h') goto('/');
+    else if (e.key === 'c' && state.status === 'ready') copyResume();
+  }
 </script>
+
+<svelte:window onkeydown={onKey} />
 
 <a class="back" href="/">← All sessions</a>
 
