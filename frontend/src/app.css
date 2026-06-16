@@ -8,6 +8,9 @@
   --accent: #cc785c;
   --accent-soft: #f3e6df;
   --danger: #b4453a;
+  --chip-bg: #f1efe9;
+  --hover: #f4f1ea;
+  --danger-soft: #f7eceb;
   --radius: 14px;
   --shadow: 0 1px 2px rgba(26, 26, 24, 0.04), 0 6px 20px rgba(26, 26, 24, 0.05);
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -92,6 +95,7 @@ a { color: inherit; text-decoration: none; }
   line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  min-height: 2.7em; /* reserve 2 lines so cards align */
 }
 
 /* Secondary preview line under the title (clamped to 2 lines) */
@@ -105,6 +109,7 @@ a { color: inherit; text-decoration: none; }
   line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  min-height: 3em; /* reserve 2 lines so cards align */
 }
 .card .meta { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 0.78rem; }
 .card .path { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.72rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -115,12 +120,14 @@ a { color: inherit; text-decoration: none; }
 .tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
 .tag {
   display: inline-flex; align-items: center;
-  background: #f1efe9; color: var(--text-soft);
+  background: var(--chip-bg); color: var(--text-soft);
   border: 1px solid var(--border);
   border-radius: 7px; padding: 0.12rem 0.5rem;
-  font-size: 0.72rem; font-weight: 500; white-space: nowrap;
+  font-size: 0.68rem; font-weight: 500; white-space: nowrap;
 }
-.card .tags .tag { font-size: 0.68rem; }
+/* List cards: a few whole tags + "+N" for the rest — never clipped */
+.card .tags { min-height: 1.3rem; }
+.card .tags .tag-more { background: transparent; border-color: transparent; color: var(--muted); padding-left: 0.1rem; }
 
 .btn {
   border: 1px solid var(--border);
@@ -132,11 +139,11 @@ a { color: inherit; text-decoration: none; }
   cursor: pointer;
   transition: background 0.12s ease, border-color 0.12s ease;
 }
-.btn:hover { background: #f4f1ea; }
+.btn:hover { background: var(--hover); }
 .btn.accent { background: var(--accent); color: #fff; border-color: var(--accent); }
-.btn.accent:hover { background: #b96a50; }
-.btn.danger { color: var(--danger); border-color: #e7cfca; }
-.btn.danger:hover { background: #f7eceb; }
+.btn.accent:hover { filter: brightness(0.92); }
+.btn.danger { color: var(--danger); border-color: var(--border); }
+.btn.danger:hover { background: var(--danger-soft); }
 
 .back { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.25rem; display: inline-block; }
 .back:hover { color: var(--text); }
@@ -153,11 +160,18 @@ a { color: inherit; text-decoration: none; }
 
 .resume {
   display: flex; gap: 0.5rem; align-items: center;
-  background: #1a1a18; color: #f2efe9; border-radius: 10px;
-  padding: 0.55rem 0.8rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.8rem; overflow-x: auto;
+  background: #1a1a18; color: #f2efe9; border: 1px solid var(--border); border-radius: 10px;
+  padding: 0.4rem 0.45rem 0.4rem 0.8rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8rem;
 }
-.resume code { white-space: nowrap; }
+.resume code { flex: 1 1 auto; min-width: 0; overflow-x: auto; white-space: nowrap; }
+.resume-copy {
+  flex: none; cursor: pointer; border: none; border-radius: 7px;
+  background: rgba(255, 255, 255, 0.14); color: #f2efe9;
+  padding: 0.35rem; display: inline-flex; align-items: center; justify-content: center;
+}
+.resume-copy:hover { background: rgba(255, 255, 255, 0.26); }
+.resume-copy svg { display: block; }
 
 /* Vertical history graph */
 .graph { position: relative; margin-left: 0.5rem; padding-left: 1.75rem; }
@@ -187,3 +201,15 @@ a { color: inherit; text-decoration: none; }
 .empty, .loading, .error { color: var(--muted); padding: 3rem 0; text-align: center; }
 .error { color: var(--danger); }
 .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: #1a1a18; color: #fff; padding: 0.6rem 1rem; border-radius: 10px; font-size: 0.85rem; }
+
+/* Selection: UI chrome is non-selectable; textual content stays selectable */
+.brand, .btn, .pill, .tag,
+.card, .tech-section .label, .node .seq, .node .ts, .count, .resume-copy {
+  -webkit-user-select: none;
+  user-select: none;
+}
+.resume code, .detail-head h2, .lede, .card .desc, .node .short, .node .long {
+  -webkit-user-select: text;
+  user-select: text;
+}
+

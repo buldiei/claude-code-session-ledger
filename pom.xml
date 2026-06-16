@@ -13,7 +13,7 @@
 
     <groupId>dev.buldiei</groupId>
     <artifactId>session-ledger</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>session-ledger</name>
     <description>Stores Claude Code sessions as versioned cards (web R/D, MCP C/U)</description>
 

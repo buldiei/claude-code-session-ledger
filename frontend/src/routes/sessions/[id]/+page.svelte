@@ -3,7 +3,7 @@
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
   import { getSession, deleteSession } from '$lib/api.js';
-  import { relativeTime } from '$lib/format.js';
+  import { relativeTime, tildify, resumeCommand } from '$lib/format.js';
 
   let id = $derived($page.params.id);
   let state = $state({ status: 'loading', session: null, error: null });
@@ -28,7 +28,7 @@
   }
 
   async function copyResume() {
-    await navigator.clipboard.writeText(state.session.resumeCommand);
+    await navigator.clipboard.writeText(resumeCommand(state.session.projectDir, state.session.sessionId));
     flash('Resume command copied');
   }
 
@@ -55,11 +55,10 @@
     {#if tip?.title && tip?.shortDescription}
       <p class="lede">{tip.shortDescription}</p>
     {/if}
-    <div class="path">{s.projectDir}</div>
 
     {#if tip?.tags?.length}
       <div class="tech-section">
-        <span class="label">Technologies</span>
+        <span class="label">Tags</span>
         <div class="tags">
           {#each tip.tags as t}<span class="tag">{t}</span>{/each}
         </div>
@@ -67,12 +66,17 @@
     {/if}
 
     <div class="resume">
-      <code>{s.resumeCommand}</code>
+      <code>{resumeCommand(s.projectDir, s.sessionId)}</code>
+      <button class="resume-copy" onclick={copyResume} title="Copy resume command" aria-label="Copy resume command">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="9" y="9" width="13" height="13" rx="2"/>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        </svg>
+      </button>
     </div>
     <div class="detail-actions">
-      <button class="btn accent" onclick={copyResume}>Copy resume command</button>
-      <button class="btn danger" onclick={remove}>Delete</button>
-      <span class="count" style="margin-left:auto">{s.versions.length} version{s.versions.length === 1 ? '' : 's'} · updated {relativeTime(s.updatedAt)}</span>
+      <span class="count">{s.versions.length} version{s.versions.length === 1 ? '' : 's'} · updated {relativeTime(s.updatedAt)}</span>
+      <button class="btn danger" onclick={remove} style="margin-left:auto">Delete</button>
     </div>
   </div>
 

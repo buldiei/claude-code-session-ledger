@@ -65,10 +65,10 @@
         {/if}
         {#if s.tags?.length}
           <div class="tags">
-            {#each s.tags as t}<span class="tag">{t}</span>{/each}
+            {#each s.tags.slice(0, 4) as t}<span class="tag">{t}</span>{/each}
+            {#if s.tags.length > 4}<span class="tag tag-more">+{s.tags.length - 4}</span>{/if}
           </div>
         {/if}
-        <div class="path">{s.projectDir}</div>
       </a>
     {/each}
   </div>
