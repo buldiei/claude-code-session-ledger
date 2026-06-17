@@ -14,14 +14,15 @@ top of that session's history graph (nothing is overwritten).
 
 1. **Identify the session** (no hook needed):
    - `sessionId` = `${CLAUDE_SESSION_ID}` — Claude Code substitutes the live session id here.
-   - `projectDir` = the directory this session was **launched** in (what `claude --resume` needs).
-     Resolve it from the session transcript's first recorded `cwd`, so it stays correct even if the
-     working directory drifted via `cd`; falls back to the current dir:
+   - `projectDir` = the current working directory:
 
-     !`f=$(find "$HOME/.claude/projects" -name "${CLAUDE_SESSION_ID}.jsonl" 2>/dev/null | head -1); d=$([ -n "$f" ] && grep -ohE '"cwd":"[^"]*"' "$f" 2>/dev/null | head -1 | sed -E 's/.*"cwd":"([^"]*)".*/\1/'); [ -n "$d" ] && echo "$d" || pwd`
+     !`pwd`
 
-   Use that printed path as `projectDir`. If `${CLAUDE_SESSION_ID}` did not expand to a real id
-   (it still shows the literal `${CLAUDE_SESSION_ID}` or is empty), ask the user and stop.
+   Note: `claude --resume` only finds a session from the directory it was **launched** in, so run
+   `/save` from there (don't `cd` elsewhere first) for the resume command on the card to be correct.
+
+   If `${CLAUDE_SESSION_ID}` did not expand to a real id (it still shows the literal
+   `${CLAUDE_SESSION_ID}` or is empty), ask the user for the session id and stop.
 
 2. **Compose the card content** from the current conversation:
    - `title`: a short, contextual **name** for the card — a few words (≤ ~6) capturing what the
