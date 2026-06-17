@@ -29,9 +29,34 @@
     setTimeout(() => (toast = null), 1800);
   }
 
+  async function copyText(text) {
+    // navigator.clipboard exists only in secure contexts (HTTPS/localhost); on a plain-HTTP
+    // LAN address it's undefined, so fall back to the legacy execCommand approach.
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    } catch (e) { /* fall through to legacy */ }
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) {
+      return false;
+    }
+  }
+
   async function copyResume() {
-    await navigator.clipboard.writeText(resumeCommand(state.session.projectDir, state.session.sessionId));
-    flash('Resume command copied');
+    const ok = await copyText(resumeCommand(state.session.projectDir, state.session.sessionId));
+    flash(ok ? 'Resume command copied' : 'Copy failed — select the command manually');
   }
 
   async function remove() {
