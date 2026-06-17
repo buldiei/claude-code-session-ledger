@@ -22,7 +22,7 @@ RUN mvn -q -B -DskipTests clean package
 FROM eclipse-temurin:25-jre
 LABEL org.opencontainers.image.title="session-ledger" \
       org.opencontainers.image.description="Store Claude Code sessions as versioned cards (web R/D, MCP C/U)" \
-      org.opencontainers.image.version="1.0.5"
+      org.opencontainers.image.version="1.0.6"
 WORKDIR /app
 # SQLite (standalone profile) writes here; xerial won't create the parent dir itself.
 # With docker-compose.standalone.yml this is also the volume mount point.

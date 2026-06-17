@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" rx="7" fill="#1a1a18"/>
+  <!-- vertical version-history graph: accent "tip" on top, two prior versions below -->
+  <line x1="16" y1="9" x2="16" y2="24" stroke="#4a463e" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="16" cy="9" r="4" fill="#cc785c"/>
+  <circle cx="16" cy="16.5" r="3" fill="#1a1a18" stroke="#8a867d" stroke-width="2"/>
+  <circle cx="16" cy="24" r="3" fill="#1a1a18" stroke="#8a867d" stroke-width="2"/>
+</svg>
