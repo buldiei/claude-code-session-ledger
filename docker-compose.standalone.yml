@@ -13,7 +13,7 @@ services:
     # Build from source. To skip the build, comment out `build:` and use the published image:
     #   image: ghcr.io/buldiei/claude-code-session-ledger:latest
     build: .
-    image: session-ledger:1.0.3
+    image: session-ledger:1.0.4
     container_name: session-ledger
     environment:
       SPRING_PROFILES_ACTIVE: sqlite
